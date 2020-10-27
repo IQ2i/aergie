@@ -46,10 +46,11 @@ func init() {
 
 func main() {
 	app := cli.App{
-		HelpName:        "ae",
-		HideHelpCommand: true,
-		Version:         version,
-		Compiled:        time.Now(),
+		HelpName:             "ae",
+		HideHelpCommand:      true,
+		EnableBashCompletion: true,
+		Version:              version,
+		Compiled:             time.Now(),
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:    "verbose",
