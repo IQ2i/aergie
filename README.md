@@ -66,6 +66,14 @@ commands:
             - ${php} composer install
 ```
 
+# Autocomplete
+
+To enable bash autocomplete, run the following commands:
+
+```bash
+sudo curl -sS -o /etc/bash_completion.d/ae https://github.com/IQ2i/aergie/blob/master/autocomplete/ae
+```
+
 # Build binaries
 
 ## Command
