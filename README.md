@@ -79,7 +79,7 @@ sudo curl -sS -o /etc/bash_completion.d/ae https://github.com/IQ2i/aergie/blob/m
 ## Command
 
 ```bash
-./build.sh -t "1.0.0" -p "darwin/amd64" -p "linux/amd64" -p "windows/amd64"
+./build.sh -t "1.0.0" -p "darwin/amd64" -p "linux/amd64"
 ```
 
 ### Options
@@ -97,9 +97,5 @@ By default, the builder use the list of available platforms (see below).
 | OS      | ARCH  |
 |---------|-------|
 | darwin  | amd64 |
-| linux   | 386   |
 | linux   | amd64 |
-| linux   | arm   |
 | linux   | arm64 |
-| windows | 386   |
-| windows | amd64 |

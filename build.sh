@@ -26,7 +26,7 @@ print_error () {
 TAG=$(date -u +%Y%m%d%H%M%S)
 
 # define available platforms
-AVAILABLE_PLATFORMS=("darwin/amd64" "linux/386" "linux/amd64" "linux/arm" "linux/arm64" "windows/386" "windows/amd64")
+AVAILABLE_PLATFORMS=("darwin/amd64" "linux/amd64" "linux/arm64")
 
 # parse options and arguments
 while getopts ": h t: p:" OPTION; do
@@ -73,9 +73,6 @@ do
 
     # init output name
     NAME='aergie-'$OS'-'$ARCH
-    if [ $OS = "windows" ]; then
-        NAME+='.exe'
-    fi
 
     # build binaries
     echo -n "Building $NAME...  "
