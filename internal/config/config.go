@@ -56,12 +56,6 @@ func configFile() []byte {
 	if len(data) == 0 {
 		data, _ = ioutil.ReadFile(".aergie.yaml")
 	}
-	if len(data) == 0 {
-		data, _ = ioutil.ReadFile(".ae.yml")
-	}
-	if len(data) == 0 {
-		data, _ = ioutil.ReadFile(".ae.yaml")
-	}
 
 	return data
 }
