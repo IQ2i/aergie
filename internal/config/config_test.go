@@ -11,25 +11,23 @@ func TestReplaceVar(t *testing.T) {
 
 	config := Config{
 		Variables: map[string]string{"test": "test environment"},
-		Commands: map[string]Command{
-			"env": {
-				Steps: []string{
-					"${test}",
-				},
+		Commands: []Command{Command{
+			Name: "env",
+			Steps: []string{
+				"${test}",
 			},
-		},
+		}},
 	}
-	replaceVar(config)
+	replaceVar(&config)
 
 	expected := Config{
 		Variables: map[string]string{"test": "test environment"},
-		Commands: map[string]Command{
-			"env": {
-				Steps: []string{
-					"test environment",
-				},
+		Commands: []Command{Command{
+			Name: "env",
+			Steps: []string{
+				"test environment",
 			},
-		},
+		}},
 	}
 
 	is.Equal(expected, config)

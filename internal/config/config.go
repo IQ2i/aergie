@@ -5,17 +5,19 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // Config contains data from configuration file
 type Config struct {
-	Variables map[string]string  `yaml:"variables"`
-	Commands  map[string]Command `yaml:"commands"`
+	Variables  map[string]string `yaml:"variables"`
+	CommandMap yaml.Node         `yaml:"commands,flow"`
+	Commands   []Command         `yaml:"-"`
 }
 
 // Command is a command definition
 type Command struct {
+	Name  string   `yaml:"-"`
 	Help  string   `yaml:"help"`
 	Steps []string `yaml:"steps"`
 }
@@ -40,8 +42,11 @@ func Init() error {
 		return fmt.Errorf("Configuration file is invalid.")
 	}
 
+	// create commands from YAML parsing
+	createCmd(&config)
+
 	// replace variables in steps
-	config = replaceVar(config)
+	replaceVar(&config)
 
 	return nil
 }
@@ -61,7 +66,26 @@ func configFile() []byte {
 	return data
 }
 
-func replaceVar(config Config) Config {
+func createCmd(config *Config) {
+	for key, item := range config.CommandMap.Content {
+		if yaml.ScalarNode == item.Kind {
+			// get command name
+			name := item.Value
+
+			// get next loop's item which is the command
+			item = config.CommandMap.Content[key+1]
+			command := &Command{}
+			_ = item.Decode(command)
+
+			// update command name
+			command.Name = name
+
+			config.Commands = append(config.Commands, *command)
+		}
+	}
+}
+
+func replaceVar(config *Config) {
 	for name, command := range config.Commands {
 		var steps []string
 		for _, step := range command.Steps {
@@ -74,6 +98,4 @@ func replaceVar(config Config) Config {
 		command.Steps = steps
 		config.Commands[name] = command
 	}
-
-	return config
 }
