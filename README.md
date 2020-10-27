@@ -14,8 +14,6 @@ The first thing to do is to create a file at the root of your project. The file 
 
 * `.aergie.yml`
 * `.aergie.yaml`
-* `.ae.yml`
-* `.ae.yaml`
 
 Then you just need to declare two blocks: 
 
