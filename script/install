@@ -29,9 +29,12 @@ main() {
     # Print informations
     output "\nThe ${CLI_NAME} v${latest_version} was installed successfully!" "success"
 
-    output "\nInstall it globally on your system:" "info"
-    output "  mv ${binary_dest}/${CLI_EXECUTABLE} /usr/local/bin/${CLI_EXECUTABLE}"
-    output "\nThen start a new shell and run '${CLI_EXECUTABLE}'" "info"
+    if [ "$EUID" -ne 0 ]; then
+        output "\nInstall it globally on your system:" "info"
+        output "  mv ${binary_dest}/${CLI_EXECUTABLE} /usr/local/bin/${CLI_EXECUTABLE}"
+    fi
+
+    output "\nDon't forget to start a new shell to use ${CLI_NAME}" "info"
 }
 
 third_party_check() {
@@ -145,12 +148,16 @@ executable_binary() {
 }
 
 move_binary() {
-    output "  Installing the binary into your home directory..." "" " "
+    output "  Installing the binary..." "" " "
 
-    binary_dest="${HOME}/${CLI_CONFIG_DIR}/bin"
-    if [ ! -d "${binary_dest}" ]; then
-        if ! mkdir -p "${binary_dest}"; then
-            binary_dest="."
+    if [ "$EUID" -eq 0 ]; then
+        binary_dest="/usr/local/bin"
+    else
+        binary_dest="${HOME}/${CLI_CONFIG_DIR}/bin"
+        if [ ! -d "${binary_dest}" ]; then
+            if ! mkdir -p "${binary_dest}"; then
+                binary_dest="."
+            fi
         fi
     fi
 
