@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/iq2i/aergie/internal/config"
 	"github.com/iq2i/aergie/internal/logger"
@@ -28,9 +27,6 @@ func Init() {
 				}
 				return nil
 			},
-		}
-		if strings.Contains(command.Name, ":") {
-			cmd.Category = strings.Split(command.Name, ":")[0]
 		}
 
 		AppCommands = append(AppCommands, cmd)

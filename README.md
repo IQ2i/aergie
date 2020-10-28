@@ -30,25 +30,25 @@ A command is form with:
 
 |       | Description                                 | Example (see example below)         |
 |-------|---------------------------------------------|-------------------------------------|
-| name  | This is the key of the command element      | `server:start`                      |
+| name  | This is the key of the command element      | `start`                             |
 | help  | Sentence to describe what the command does  | `help: Start docker compose`        |
-| steps | An array with each action to be carried out | `steps: [docker-compose up -d]` |
+| steps | An array with each action to be carried out | `steps: [docker-compose up -d]`     |
 
 Example:
 
 ```yaml
 commands:
-    server:start:
+    start:
         help: Start docker compose
         steps:
             - docker-compose up -d
 
-    server:stop:
+    stop:
         help: Stop docker compose
         steps:
             - docker-compose stop
 
-    app:install:
+    install:
         help: Install my application
         steps:
             - ${php} composer install
@@ -64,7 +64,7 @@ variables:
     php: docker exec -it php_container_name
 
 commands:
-    app:install:
+    install:
         help: Install my application
         steps:
             - ${php} composer install
