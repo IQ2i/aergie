@@ -17,12 +17,13 @@ var AppCommands []*cli.Command
 
 // Init is a function to init application commands
 func Init() {
-	for key, command := range config.AppConfig.Commands {
+	for _, command := range config.AppConfig.Commands {
+		steps := command.Steps
 		cmd := &cli.Command{
 			Name:  command.Name,
 			Usage: command.Help,
 			Action: func(c *cli.Context) error {
-				for _, step := range config.AppConfig.Commands[key].Steps {
+				for _, step := range steps {
 					exe(c, step)
 				}
 				return nil
