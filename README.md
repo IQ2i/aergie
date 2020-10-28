@@ -6,11 +6,13 @@
 
 # Installation
 
-Run the following installer to download the Aergie binary :
+Run the following installer to download the Aergie binary:
 
 ```bash
 curl -sS https://github.com/IQ2i/aergie/blob/master/script/install | bash
 ```
+
+If you can, run the above command in sudo. This will allow the installer to put the script in a better directory and to install the autocompletion.
 
 # How to use Aergie
 
@@ -66,14 +68,6 @@ commands:
         help: Install my application
         steps:
             - ${php} composer install
-```
-
-# Autocomplete
-
-To enable bash autocomplete, run the following commands:
-
-```bash
-sudo curl -sS -o /etc/bash_completion.d/ae https://github.com/IQ2i/aergie/blob/master/autocomplete/ae
 ```
 
 # Build binaries
