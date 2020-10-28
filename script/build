@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # print usage info
 print_usage () {
   echo -e "\e[33mUsage:\e[0m"
@@ -26,7 +28,7 @@ print_error () {
 TAG=$(date -u +%Y%m%d%H%M%S)
 
 # define available platforms
-AVAILABLE_PLATFORMS=("darwin/amd64" "linux/amd64" "linux/arm64")
+AVAILABLE_PLATFORMS=("darwin/amd64" "linux/amd64")
 
 # parse options and arguments
 while getopts ": h t: p:" OPTION; do
@@ -62,7 +64,7 @@ if [ ${#PLATFORMS[@]} == 0 ]; then
 fi
 
 # define path of current script directory
-DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)/.."
 
 for PLATFORM in "${PLATFORMS[@]}"
 do
@@ -76,9 +78,10 @@ do
 
     # build binaries
     echo -n "Building $NAME...  "
+
     env GOOS=$OS GOARCH=$ARCH go build \
         -ldflags "-X 'main.version=$TAG'" \
-        -o "$DIR/bin/$OS/$NAME" \
+        -o "$DIR/bin/$NAME" \
         $DIR/cmd/aergie/main.go
 
     if [ $? -ne 0 ]; then
@@ -87,7 +90,10 @@ do
     fi
 
     # update execution permission
-    chmod +x $DIR/bin/$OS/$NAME
+    chmod +x $DIR/bin/$NAME
+
+    # compress binary
+    gzip $DIR/bin/$NAME
 
     echo "Done!"
 done
