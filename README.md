@@ -96,4 +96,3 @@ By default, the builder use the list of available platforms (see below).
 |---------|-------|
 | darwin  | amd64 |
 | linux   | amd64 |
-| linux   | arm64 |

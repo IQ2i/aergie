@@ -26,7 +26,7 @@ print_error () {
 TAG=$(date -u +%Y%m%d%H%M%S)
 
 # define available platforms
-AVAILABLE_PLATFORMS=("darwin/amd64" "linux/amd64" "linux/arm64")
+AVAILABLE_PLATFORMS=("darwin/amd64" "linux/amd64")
 
 # parse options and arguments
 while getopts ": h t: p:" OPTION; do
@@ -76,6 +76,7 @@ do
 
     # build binaries
     echo -n "Building $NAME...  "
+
     env GOOS=$OS GOARCH=$ARCH go build \
         -ldflags "-X 'main.version=$TAG'" \
         -o "$DIR/bin/$OS/$NAME" \
