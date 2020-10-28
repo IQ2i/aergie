@@ -8,6 +8,8 @@ CLI_CONFIG_DIR=".aergie"
 CLI_TMP_NAME="$CLI_EXECUTABLE-"$(date +"%s")
 CLI_REPO_LATEST_RELEASE_URL="https://api.github.com/repos/iq2i/aergie/releases/latest"
 CLI_DOWNLOAD_URL_PATTERN="https://github.com/iq2i/aergie/releases/download/~latest_version~/aergie-~platform~.gz"
+CLI_AUTOCOMPLETE_URL="https://raw.githubusercontent.com/iq2i/aergie/master/autocomplete/ae"
+CLI_AUTOCOMPLETE_TMP_NAME="$CLI_EXECUTABLE-autocomplete-"$(date +"%s")
 
 main() {
     # Print ASCII logo
@@ -25,6 +27,13 @@ main() {
     uncompress_binary
     executable_binary
     move_binary
+
+    # Autocomplete (only with sudo user)
+    if [ "$EUID" -eq 0 ]; then
+        output "Autocomplete" "heading"
+        download_autocomplete
+        move_autocomplete
+    fi
 
     # Print informations
     output "\nThe ${CLI_NAME} v${latest_version} was installed successfully!" "success"
@@ -166,6 +175,34 @@ move_binary() {
     if [ $? != 0 ]; then
         output "Failed to move the binary to ${binary_dest}." "error"
         rm "/tmp/${CLI_TMP_NAME}"
+        exit 1
+    fi
+
+    output "ok" "sucess"
+}
+
+download_autocomplete() {
+    output "  Downloading autocomplete..." "" " ";
+    case ${downloader} in
+        "curl")
+            curl -sSf --location "${CLI_AUTOCOMPLETE_URL}" > "/tmp/${CLI_AUTOCOMPLETE_TMP_NAME}"
+            ;;
+        "wget")
+            wget -q "${CLI_AUTOCOMPLETE_URL}" -O "/tmp/${CLI_AUTOCOMPLETE_TMP_NAME}"
+            ;;
+    esac
+
+    output "ok" "success"
+}
+
+move_autocomplete() {
+    output "  Installing the autocomplete..." "" " "
+
+    mv "/tmp/${CLI_AUTOCOMPLETE_TMP_NAME}" "/etc/bash_completion.d/${CLI_EXECUTABLE}"
+
+    if [ $? != 0 ]; then
+        output "Failed to move the binary to /etc/bash_completion.d/." "error"
+        rm "/tmp/${CLI_AUTOCOMPLETE_TMP_NAME}"
         exit 1
     fi
 
