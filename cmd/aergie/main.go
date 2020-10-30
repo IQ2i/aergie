@@ -18,11 +18,7 @@ var version string
 
 func init() {
 	// init config
-	err := config.Init()
-	if err != nil {
-		logger.Error(err)
-		os.Exit(1)
-	}
+	config.Init()
 
 	// init commands
 	command.Init()

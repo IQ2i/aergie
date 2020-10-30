@@ -3,8 +3,10 @@ package config
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 
+	"github.com/iq2i/aergie/internal/logger"
 	"gopkg.in/yaml.v3"
 )
 
@@ -26,20 +28,21 @@ type Command struct {
 var AppConfig Config
 
 // Init the configuration
-func Init() error {
+func Init() {
 	config := Config{}
 	defer func() { AppConfig = config }()
 
 	// get config file content
 	data := configFile()
 	if len(data) == 0 {
-		return nil
+		return
 	}
 
 	// cast to YAML
 	err := yaml.Unmarshal(data, &config)
 	if err != nil {
-		return fmt.Errorf("Configuration file is invalid.")
+		logger.Error(fmt.Errorf("Configuration file is invalid."))
+		os.Exit(1)
 	}
 
 	// create commands from YAML parsing
@@ -47,8 +50,6 @@ func Init() error {
 
 	// replace variables in steps
 	replaceVar(&config)
-
-	return nil
 }
 
 func configFile() []byte {
@@ -66,6 +67,13 @@ func createCmd(config *Config) {
 			// get command name
 			name := item.Value
 
+			for _, cmd := range config.Commands {
+				if cmd.Name == name {
+					logger.Error(fmt.Errorf("Configuration file is invalid, you have defined the same command \"%s\" twice.", name))
+					os.Exit(1)
+				}
+			}
+
 			// get next loop's item which is the command
 			item = config.CommandMap.Content[key+1]
 			command := &Command{}
@@ -80,7 +88,7 @@ func createCmd(config *Config) {
 }
 
 func replaceVar(config *Config) {
-	for name, command := range config.Commands {
+	for key, command := range config.Commands {
 		var steps []string
 		for _, step := range command.Steps {
 			for n, v := range config.Variables {
@@ -90,6 +98,6 @@ func replaceVar(config *Config) {
 			steps = append(steps, step)
 		}
 		command.Steps = steps
-		config.Commands[name] = command
+		config.Commands[key] = command
 	}
 }
