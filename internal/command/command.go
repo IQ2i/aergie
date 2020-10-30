@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
+	"syscall"
 
 	"github.com/iq2i/aergie/internal/config"
 	"github.com/iq2i/aergie/internal/logger"
@@ -51,8 +53,22 @@ func exe(c *cli.Context, step string) {
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
 
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGCHLD)
+	go func() {
+		<-ch
+		os.Exit(0)
+	}()
+
 	err = cmd.Run()
 	if err != nil {
+		// catch interrupt in subprocess
+		if exitError, ok := err.(*exec.ExitError); ok {
+			if exitError.ExitCode() == 130 {
+				os.Exit(0)
+			}
+		}
+
 		logger.Error(fmt.Errorf("Step \"%s\" failed.", step))
 		os.Exit(1)
 	}
