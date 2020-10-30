@@ -9,7 +9,7 @@
 Run the following installer to download the Aergie binary:
 
 ```bash
-curl -sS https://github.com/IQ2i/aergie/blob/master/script/install | bash
+curl -sS https://raw.githubusercontent.com/IQ2i/aergie/master/script/install | sudo bash
 ```
 
 If you can, run the above command in sudo. This will allow the installer to put the script in a better directory and to install the autocompletion.
