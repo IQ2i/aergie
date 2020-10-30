@@ -66,6 +66,9 @@ fi
 # define path of current script directory
 DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)/.."
 
+# clean bin directory
+rm $DIR/bin/*
+
 for PLATFORM in "${PLATFORMS[@]}"
 do
     # get OS and arch information from platform
