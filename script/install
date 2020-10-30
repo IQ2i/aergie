@@ -129,10 +129,10 @@ download_binary() {
     output "  Downloading binary..." "" " ";
     case ${downloader} in
         "curl")
-            curl -sSf --location "${latest_url}" > "/tmp/${CLI_TMP_NAME}"
+            curl -sSf --location "${latest_url}" > "/tmp/${CLI_TMP_NAME}.gz"
             ;;
         "wget")
-            wget -q "${latest_url}" -O "/tmp/${CLI_TMP_NAME}"
+            wget -q "${latest_url}" -O "/tmp/${CLI_TMP_NAME}.gz"
             ;;
     esac
 
