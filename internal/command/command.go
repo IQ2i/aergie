@@ -54,7 +54,7 @@ func exe(c *cli.Context, step string) {
 	cmd.Stderr = os.Stderr
 
 	ch := make(chan os.Signal)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGCHLD)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	go func() {
 		<-ch
 		os.Exit(0)
