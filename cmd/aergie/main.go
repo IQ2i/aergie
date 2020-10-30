@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -62,6 +63,9 @@ func main() {
 				Aliases: []string{"q"},
 				Usage:   "Do not output message except error messages",
 			},
+		},
+		CommandNotFound: func(c *cli.Context, command string) {
+			logger.Error(fmt.Errorf("Command \"%s\" is not defined.", command))
 		},
 		Commands: command.AppCommands,
 	}
