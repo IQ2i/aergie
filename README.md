@@ -69,28 +69,3 @@ commands:
         steps:
             - ${php} composer install
 ```
-
-# Build binaries
-
-## Command
-
-```bash
-./build.sh -t "1.0.0" -p "darwin/amd64" -p "linux/amd64"
-```
-
-### Options
-
-``-t`` tag (optionnal)  
-The tag option allows you to tag your build with a specific version.  
-By default, the builder use a timestamp.
-
-``-p`` platform (optionnal)  
-The platform option allows you to specify for which platforms you want to build a binary.  
-By default, the builder use the list of available platforms (see below).
-
-## Available operation systems and compilation architectures
-
-| OS      | ARCH  |
-|---------|-------|
-| darwin  | amd64 |
-| linux   | amd64 |
