@@ -27,7 +27,7 @@ jobs:
           version: latest
 
   tests:
-    name: "CI"
+    name: Tests
     runs-on: ubuntu-latest
     steps:
       - 
