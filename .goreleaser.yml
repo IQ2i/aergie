@@ -3,30 +3,24 @@ before:
     - go mod download
 
 builds:
-  - 
+  -
+    id: macos
+    goos: [darwin]
+    goarch: [amd64]
+    binary: bin/ae
+    main: ./cmd/ae
     ldflags:
-      - -X github.com/iq2i/aergie/internal/build.Version={{ .Version }}
-      - -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
+      - -s -w -X github.com/iq2i/aergie/internal/build.Version={{ .Version }} -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
+  -
+    id: linux
+    goos: [linux]
+    goarch: [386, arm, amd64, arm64]
+    binary: bin/ae
+    main: ./cmd/ae
+    ldflags:
+      - -s -w -X github.com/iq2i/aergie/internal/build.Version={{ .Version }} -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
     env:
       - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
-    goarch:
-      - 386
-      - amd64
-      - arm
-      - arm64
-    ignore:
-      - 
-        goos: darwin
-        goarch: 386
-      - 
-        goos: darwin
-        goarch: arm
-      - 
-        goos: darwin
-        goarch: arm64
 
 archives:
   - 
