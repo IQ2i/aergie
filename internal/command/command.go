@@ -42,7 +42,7 @@ func exe(c *cli.Context, step string) {
 
 	args, err := shellquote.Split(step)
 	if err != nil {
-		logger.Error(fmt.Errorf("Invalid instruction \"%s\".", step))
+		logger.Error(fmt.Errorf("Invalid instruction \"%s\"", step))
 		os.Exit(1)
 	}
 
@@ -69,7 +69,7 @@ func exe(c *cli.Context, step string) {
 			}
 		}
 
-		logger.Error(fmt.Errorf("Step \"%s\" failed.", step))
+		logger.Error(fmt.Errorf("Step \"%s\" failed", step))
 		os.Exit(1)
 	}
 }

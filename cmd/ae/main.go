@@ -61,7 +61,7 @@ func main() {
 			},
 		},
 		CommandNotFound: func(c *cli.Context, command string) {
-			logger.Error(fmt.Errorf("Command \"%s\" is not defined.", command))
+			logger.Error(fmt.Errorf("Command \"%s\" is not defined", command))
 		},
 		Commands: command.AppCommands,
 	}
