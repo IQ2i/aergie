@@ -4,6 +4,9 @@ before:
 
 builds:
   - 
+    ldflags:
+      - -X github.com/iq2i/aergie/internal/build.Version={{ .Version }}
+      - -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
     env:
       - CGO_ENABLED=0
     goos:

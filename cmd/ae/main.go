@@ -3,18 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/gookit/color"
+	"github.com/iq2i/aergie/internal/build"
 	"github.com/iq2i/aergie/internal/command"
 	"github.com/iq2i/aergie/internal/config"
 	"github.com/iq2i/aergie/internal/help"
 	"github.com/iq2i/aergie/internal/logger"
 	"github.com/urfave/cli/v2"
 )
-
-// init with -ldflags option during run or build
-var version string
 
 func init() {
 	// init config
@@ -46,8 +43,8 @@ func main() {
 		HelpName:             "ae",
 		HideHelpCommand:      true,
 		EnableBashCompletion: true,
-		Version:              version,
-		Compiled:             time.Now(),
+		Version:              build.Version,
+		Compiled:             build.Date,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:    "verbose",
