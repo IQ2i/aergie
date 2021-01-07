@@ -41,7 +41,7 @@ func Init() {
 	// cast to YAML
 	err := yaml.Unmarshal(data, &config)
 	if err != nil {
-		logger.Error(fmt.Errorf("Configuration file is invalid."))
+		logger.Error(fmt.Errorf("Configuration file is invalid"))
 		os.Exit(1)
 	}
 
@@ -69,7 +69,7 @@ func createCmd(config *Config) {
 
 			for _, cmd := range config.Commands {
 				if cmd.Name == name {
-					logger.Error(fmt.Errorf("Configuration file is invalid, you have defined the same command \"%s\" twice.", name))
+					logger.Error(fmt.Errorf("Configuration file is invalid, you have defined the same command \"%s\" twice", name))
 					os.Exit(1)
 				}
 			}
