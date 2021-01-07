@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/gookit/color"
 	"github.com/iq2i/aergie/internal/build"
 	"github.com/iq2i/aergie/internal/command"
 	"github.com/iq2i/aergie/internal/config"
-	"github.com/iq2i/aergie/internal/help"
 	"github.com/iq2i/aergie/internal/logger"
+	"github.com/iq2i/aergie/internal/tpl"
 	"github.com/urfave/cli/v2"
 )
 
@@ -30,11 +31,13 @@ func init() {
 		Name:  "version",
 		Usage: "Print this application version",
 	}
-
-	cli.AppHelpTemplate = help.App()
-	cli.CommandHelpTemplate = help.Command()
+	cli.AppHelpTemplate = tpl.AppHelpTemplate
+	cli.CommandHelpTemplate = tpl.CommandHelpTemplate
+	cli.HelpPrinter = func(w io.Writer, templ string, data interface{}) {
+		cli.HelpPrinterCustom(w, color.Sprintf(templ), data, nil)
+	}
 	cli.VersionPrinter = func(c *cli.Context) {
-		color.Fprintf(c.App.Writer, "<info>Aergie cli</> version <comment>%s</>\n", c.App.Version)
+		color.Fprintf(c.App.Writer, tpl.VersionTemplate, c.App.Version)
 	}
 }
 
