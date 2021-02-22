@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 
 	"github.com/gookit/color"
 	"github.com/iq2i/aergie/internal/build"
@@ -14,7 +15,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func init() {
+func main() {
 	// init config
 	config.Init()
 
@@ -39,15 +40,21 @@ func init() {
 	cli.VersionPrinter = func(c *cli.Context) {
 		color.Fprintf(c.App.Writer, tpl.VersionTemplate, c.App.Version)
 	}
-}
 
-func main() {
+	// get build informations
+	buildVersion := build.Version
+	buildDate, err := time.Parse("2006-01-02 15:04:05", build.Date)
+	if err != nil {
+		logger.Error(fmt.Errorf("Compiled time is invalid"))
+		os.Exit(1)
+	}
+
 	app := cli.App{
 		HelpName:             "ae",
 		HideHelpCommand:      true,
 		EnableBashCompletion: true,
-		Version:              build.Version,
-		Compiled:             build.Date,
+		Version:              buildVersion,
+		Compiled:             buildDate,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:    "verbose",
@@ -66,7 +73,7 @@ func main() {
 		Commands: command.AppCommands,
 	}
 
-	err := app.Run(os.Args)
+	err = app.Run(os.Args)
 	if err != nil {
 		logger.Error(err)
 		os.Exit(1)
