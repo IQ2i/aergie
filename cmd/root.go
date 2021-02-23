@@ -9,6 +9,10 @@ import (
 var quiet bool
 var verbose bool
 
+func init() {
+	cobra.EnableCommandSorting = false
+}
+
 func Execute(version string) {
 	var rootCmd = &cobra.Command{
 		Use:     "ae <command> [flags]",
