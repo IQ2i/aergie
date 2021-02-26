@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// HelpFunc prints help text
 func HelpFunc(cmd *cobra.Command, args []string) {
 	commands := []string{}
 	for _, c := range cmd.Commands() {
