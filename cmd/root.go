@@ -8,9 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var quiet bool
-var verbose bool
-
 func init() {
 	cobra.EnableCommandSorting = false
 }
