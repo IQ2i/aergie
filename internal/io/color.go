@@ -7,5 +7,8 @@ var (
 )
 
 func Bold(t string) string {
+	if len(t) == 0 {
+		return ""
+	}
 	return bold(t)
 }
