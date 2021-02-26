@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 
+	"github.com/iq2i/aergie/internal/cmd/root"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,8 @@ func Execute(version string) {
 
 		Args: cobra.NoArgs,
 	}
+
+	rootCmd.SetHelpFunc(root.HelpFunc)
 
 	rootCmd.AddCommand(newUserCommands()...)
 
