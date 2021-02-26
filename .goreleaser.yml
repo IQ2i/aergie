@@ -8,17 +8,15 @@ builds:
     goos: [darwin]
     goarch: [amd64]
     binary: bin/ae
-    main: ./cmd/ae
     ldflags:
-      - -s -w -X github.com/iq2i/aergie/internal/build.Version={{ .Version }} -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
+      - -s -w -X main.Version={{ .Version }}
   -
     id: linux
     goos: [linux]
     goarch: [386, arm, amd64, arm64]
     binary: bin/ae
-    main: ./cmd/ae
     ldflags:
-      - -s -w -X github.com/iq2i/aergie/internal/build.Version={{ .Version }} -X github.com/iq2i/aergie/internal/build.Date={{ time "2006-01-02 15:04:05" }}
+      - -s -w -X main.Version={{ .Version }}
     env:
       - CGO_ENABLED=0
 
