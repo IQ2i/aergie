@@ -1,11 +1,22 @@
 package config
 
 import (
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
 )
+
+func TestConfigFile(t *testing.T) {
+	is := assert.New(t)
+
+	createFile(t, ".aergie.yaml", "foo: bar")
+	data := configFile()
+
+	is.GreaterOrEqual(len(data), 0)
+}
 
 func TestCreateCmd(t *testing.T) {
 	is := assert.New(t)
@@ -95,4 +106,8 @@ func TestReplaceVar(t *testing.T) {
 	}
 
 	is.Equal(expected, config)
+}
+
+func createFile(t testing.TB, filename, contents string) {
+	require.NoError(t, ioutil.WriteFile(filename, []byte(contents), 0644))
 }
