@@ -37,15 +37,15 @@ func newUserCommands() []*cobra.Command {
 					cmd.Stdin = os.Stdin
 					cmd.Stderr = os.Stderr
 
-					ch := make(chan os.Signal)
-					signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+					// In case of interrupt signal, stop all command, not only current step
+					signals := make(chan os.Signal, 1)
+					signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 					go func() {
-						<-ch
+						<-signals
 						os.Exit(0)
 					}()
 
-					err = cmd.Run()
-					if err != nil {
+					if err := cmd.Run(); err != nil {
 						// catch interrupt in subprocess
 						if exitError, ok := err.(*exec.ExitError); ok {
 							if exitError.ExitCode() == 130 {

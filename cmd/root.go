@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"log"
+	"fmt"
+	"os"
 
 	"github.com/iq2i/aergie/internal/cmd/root"
 	"github.com/spf13/cobra"
@@ -35,6 +36,7 @@ func Execute(version string) {
 	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
 
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
