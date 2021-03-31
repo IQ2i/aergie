@@ -90,7 +90,6 @@ func replaceVar(config *Config) {
 		for _, step := range command.Steps {
 			for n, v := range config.Variables {
 				step = strings.ReplaceAll(step, "${"+n+"}", v)
-				break
 			}
 			steps = append(steps, step)
 		}
