@@ -6,13 +6,49 @@
 
 # Installation
 
+## Linux
+
 Run the following installer to download the Aergie binary:
 
 ```bash
-curl -sS https://get.aergie.com/install | sudo bash
+wget https://get.aergie.com/install -O - | bash
 ```
 
-If you can, run the above command in sudo. This will allow the installer to put the script in a better directory and to install the autocompletion.
+## macOS
+
+Run the following installer to download the Aergie binary:
+
+```bash
+curl -sS https://get.aergie.com/install | bash
+```
+
+# Autocomplete
+
+## Bash
+
+```bash
+ae completion bash > /etc/bash_completion.d/ae
+```
+
+## zsh
+
+```bash
+ae completion zsh > "${fpath[1]}/_ae"
+```
+
+## fish
+
+```bash
+ae completion fish > ~/.config/fish/completions/ae.fish
+```
+
+## PowerShell
+
+```bash
+ae completion powershell > ae.ps1
+```
+
+> Don't forget to source this file from your PowerShell profile.
 
 # How to use Aergie
 
