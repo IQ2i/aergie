@@ -28,6 +28,7 @@ func Execute(version string) {
 
 	rootCmd.SetHelpFunc(root.HelpFunc)
 
+	rootCmd.AddCommand(newCompletionCommand())
 	rootCmd.AddCommand(newUserCommands()...)
 
 	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
