@@ -27,6 +27,9 @@ archives:
     files:
       - none*
 
+release:
+  name_template: "v{{.Tag}}"
+
 changelog:
   sort: asc
   filters:
