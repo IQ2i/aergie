@@ -8,6 +8,8 @@ import (
 var version = "DEV"
 
 func main() {
-	config.Init()
+	config.InitAppConfig()
+	config.InitUserConfig()
+
 	cmd.Execute(version)
 }
