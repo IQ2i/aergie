@@ -3,10 +3,12 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
-	"github.com/iq2i/aergie/internal/io"
 	"github.com/iq2i/aergie/internal/cmd/root"
+	"github.com/iq2i/aergie/internal/io"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 func init() {
@@ -27,8 +29,14 @@ func Execute(version string) {
 		Args: cobra.NoArgs,
 
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
-			latestVersion := root.GetLatestVersion()
+			now := time.Now().Add(-24 * time.Hour)
+			latestCheck := viper.GetTime("update.latest_check")
+			if latestCheck.Before(now) {
+				viper.Set("update.latest_version", root.GetLatestVersion())
+				viper.Set("update.latest_check", time.Now().Format("2006-01-02 15:04:05"))
+			}
 
+			latestVersion := viper.GetString("update.latest_version")
 			if version != latestVersion {
 				fmt.Printf("\n%s %s → %s\n", io.Yellow("A new release of Aergie is available:"), io.Cyan(version), io.Cyan(latestVersion))
 				fmt.Printf("%s\n\n", io.Yellow(fmt.Sprintf("https://github.com/IQ2i/aergie/releases/tag/%s", latestVersion)))
