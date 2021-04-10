@@ -27,7 +27,7 @@ type Command struct {
 var AppConfig Config
 
 // Init the configuration
-func Init() {
+func InitUserConfig() {
 	config := Config{}
 	defer func() { AppConfig = config }()
 
