@@ -16,12 +16,12 @@ func init() {
 }
 
 // Execute is the real main function of Aergie cli
-func Execute(version string) {
+func Execute() {
 	var rootCmd = &cobra.Command{
 		Use:     "ae <command> [flags]",
 		Short:   "Aergie CLI",
 		Long:    "An easy alternative to makefile",
-		Version: version,
+		Version: os.Getenv("AE_VERSION"),
 
 		SilenceUsage:  true,
 		SilenceErrors: true,
@@ -34,11 +34,12 @@ func Execute(version string) {
 			if latestCheck.Before(now) {
 				viper.Set("update.latest_version", root.GetLatestVersion())
 				viper.Set("update.latest_check", time.Now().Format("2006-01-02 15:04:05"))
+				viper.WriteConfig()
 			}
 
 			latestVersion := viper.GetString("update.latest_version")
-			if version != latestVersion {
-				fmt.Printf("\n%s %s → %s\n", io.Yellow("A new release of Aergie is available:"), io.Cyan(version), io.Cyan(latestVersion))
+			if os.Getenv("AE_VERSION") != latestVersion {
+				fmt.Printf("\n%s %s → %s\n", io.Yellow("A new release of Aergie is available:"), io.Cyan(os.Getenv("AE_VERSION")), io.Cyan(latestVersion))
 				fmt.Printf("%s\n\n", io.Yellow(fmt.Sprintf("https://github.com/IQ2i/aergie/releases/tag/%s", latestVersion)))
 			}
 		},

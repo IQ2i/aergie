@@ -1,12 +1,22 @@
 package root
 
 import (
+	"os"
+
 	"github.com/iq2i/aergie/internal/http"
 )
 
 func GetLatestVersion() string {
 	client := http.CreateClient()
-	req := http.CreateRequest("https://get.aergie.com/latest")
+	req, err := http.CreateRequest(os.Getenv("AE_UPDATE_DOMAIN") + "/latest")
+	if err != nil {
+		os.Exit(0)
+	}
 
-	return http.ExecRequest(client, req)
+	response, err := http.ExecRequest(client, req)
+	if err != nil {
+		os.Exit(0)
+	}
+
+	return response
 }
