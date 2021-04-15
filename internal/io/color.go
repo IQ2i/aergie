@@ -3,9 +3,9 @@ package io
 import "github.com/mgutz/ansi"
 
 var (
-	bold     = ansi.ColorFunc("default+b")
-	yellow   = ansi.ColorFunc("yellow")
-	cyan     = ansi.ColorFunc("cyan")
+	bold   = ansi.ColorFunc("default+b")
+	yellow = ansi.ColorFunc("yellow")
+	cyan   = ansi.ColorFunc("cyan")
 )
 
 func Bold(t string) string {
