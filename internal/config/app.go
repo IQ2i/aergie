@@ -23,21 +23,33 @@ func userConfig() {
 
 	configPath := filepath.Join(userHomeDir, ".aergie")
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		os.Mkdir(configPath, 0775)
+		if err := os.Mkdir(configPath, 0775); err != nil {
+			fmt.Println("An error occured during config initialization. Check that you can write into your home dir.")
+			os.Exit(1)
+		}
 	}
 
 	configFile := filepath.Join(userHomeDir, ".aergie", "config.json")
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		viper.WriteConfig()
+		if err := viper.WriteConfig(); err != nil {
+			fmt.Println("An error occured during config initialization. Check that you can write into your home dir.")
+			os.Exit(1)
+		}
 	}
 
 	viper.SetConfigFile(configFile)
-	viper.ReadInConfig()
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println("An error occured during config initialization. Check that you can write into your home dir.")
+		os.Exit(1)
+	}
 
 	// set default config values
 	viper.SetDefault("update.latest_version", "")
 	viper.SetDefault("update.latest_check", "")
-	viper.WriteConfig()
+	if err := viper.WriteConfig(); err != nil {
+		fmt.Println("An error occured during config initialization. Check that you can write into your home dir.")
+		os.Exit(1)
+	}
 }
 
 func envConfig() {

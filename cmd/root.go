@@ -34,7 +34,9 @@ func Execute() {
 			if latestCheck.Before(now) {
 				viper.Set("update.latest_version", root.GetLatestVersion())
 				viper.Set("update.latest_check", time.Now().Format("2006-01-02 15:04:05"))
-				viper.WriteConfig()
+				if err := viper.WriteConfig(); err != nil {
+					os.Exit(0)
+				}
 			}
 
 			latestVersion := viper.GetString("update.latest_version")
