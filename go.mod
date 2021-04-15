@@ -3,7 +3,6 @@ module github.com/iq2i/aergie
 go 1.15
 
 require (
-	github.com/fsnotify/fsnotify v1.4.7
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
