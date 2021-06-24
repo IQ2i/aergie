@@ -12,10 +12,7 @@ import (
 func HelpFunc(cmd *cobra.Command, args []string) {
 	commands := []string{}
 	for _, c := range cmd.Commands() {
-		if c.Short == "" {
-			continue
-		}
-		if c.Hidden {
+		if !cmd.IsAvailableCommand() {
 			continue
 		}
 
