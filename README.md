@@ -36,20 +36,6 @@ ae completion bash > /etc/bash_completion.d/ae
 ae completion zsh > "${fpath[1]}/_ae"
 ```
 
-## fish
-
-```bash
-ae completion fish > ~/.config/fish/completions/ae.fish
-```
-
-## PowerShell
-
-```bash
-ae completion powershell > ae.ps1
-```
-
-> Don't forget to source this file from your PowerShell profile.
-
 # How to use Aergie
 
 The first thing to do is to create a file at the root of your project. The file can have several possible names:
