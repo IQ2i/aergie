@@ -9,14 +9,14 @@ builds:
     goarch: [amd64]
     binary: bin/ae
     ldflags:
-      - -s -w -X main.Version={{ .Version }}
+      - -s -w -X main.version={{ .Version }}
   -
     id: linux
     goos: [linux]
     goarch: [386, arm, amd64, arm64]
     binary: bin/ae
     ldflags:
-      - -s -w -X main.Version={{ .Version }}
+      - -s -w -X main.version={{ .Version }}
     env:
       - CGO_ENABLED=0
 
