@@ -38,6 +38,7 @@ func Execute(version string) {
 	}
 
 	rootCmd.SetHelpFunc(root.HelpFunc)
+	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
 	rootCmd.AddCommand(newCompletionCommand())
 	rootCmd.AddCommand(newUserCommands()...)
