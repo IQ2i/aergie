@@ -37,14 +37,16 @@ func Execute(version string) {
 		},
 	}
 
+	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
 	rootCmd.SetHelpFunc(root.HelpFunc)
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
+	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
+	rootCmd.SetVersionTemplate(versionFormat(version))
+
+	rootCmd.AddCommand(newVersionCommand(version))
 	rootCmd.AddCommand(newCompletionCommand())
 	rootCmd.AddCommand(newUserCommands()...)
-
-	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
-	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
