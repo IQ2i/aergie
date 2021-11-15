@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/iq2i/aergie/internal/cmd/root"
+	completionCmd "github.com/iq2i/aergie/internal/cmd/completion"
+	helpCmd "github.com/iq2i/aergie/internal/cmd/help"
+	userCmd "github.com/iq2i/aergie/internal/cmd/user"
+	versionCmd "github.com/iq2i/aergie/internal/cmd/version"
 	"github.com/spf13/cobra"
 )
 
@@ -38,15 +41,15 @@ func Execute(version string) {
 	}
 
 	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
-	rootCmd.SetHelpFunc(root.HelpFunc)
+	rootCmd.SetHelpFunc(helpCmd.Format)
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
 	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
-	rootCmd.SetVersionTemplate(versionFormat(version))
+	rootCmd.SetVersionTemplate(versionCmd.Format(version))
 
-	rootCmd.AddCommand(newVersionCommand(version))
-	rootCmd.AddCommand(newCompletionCommand())
-	rootCmd.AddCommand(newUserCommands()...)
+	rootCmd.AddCommand(versionCmd.NewVersionCommand(version))
+	rootCmd.AddCommand(completionCmd.NewCompletionCommand())
+	rootCmd.AddCommand(userCmd.NewUserCommands()...)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

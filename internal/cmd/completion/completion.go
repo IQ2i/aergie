@@ -1,4 +1,4 @@
-package cmd
+package completion
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newCompletionCommand() *cobra.Command {
+func NewCompletionCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:    "completion [bash|zsh]",
 		Short:  "Generate completion script",

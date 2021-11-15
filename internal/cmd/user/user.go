@@ -1,4 +1,4 @@
-package cmd
+package user
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newUserCommands() []*cobra.Command {
+func NewUserCommands() []*cobra.Command {
 	var cmds = make([]*cobra.Command, 0)
 
 	for _, configCmd := range config.AppConfig.Commands {

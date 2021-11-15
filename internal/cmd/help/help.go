@@ -1,4 +1,4 @@
-package root
+package help
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// HelpFunc prints help text
-func HelpFunc(cmd *cobra.Command, args []string) {
+// Format prints help text
+func Format(cmd *cobra.Command, args []string) {
 	commands := []string{}
 	for _, c := range cmd.Commands() {
 		if !c.IsAvailableCommand() {

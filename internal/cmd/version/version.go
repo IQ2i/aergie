@@ -1,4 +1,4 @@
-package cmd
+package version
 
 import (
 	"fmt"
@@ -7,13 +7,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newVersionCommand(version string) *cobra.Command {
+func NewVersionCommand(version string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:    "version",
 		Hidden: true,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Fprint(cmd.OutOrStdout(), versionFormat(version))
+			fmt.Fprint(cmd.OutOrStdout(), Format(version))
 			return nil
 		},
 	}
@@ -21,7 +21,7 @@ func newVersionCommand(version string) *cobra.Command {
 	return cmd
 }
 
-func versionFormat(version string) string {
+func Format(version string) string {
 	return fmt.Sprintf("ae version %s\n%s\n", version, changelogURL(version))
 }
 
