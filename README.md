@@ -6,9 +6,9 @@
 
 # Installation
 
-## Linux
-
 Run the following installer to download the Aergie binary:
+
+## Linux
 
 ```bash
 wget https://get.aergie.com/install -O - | bash
@@ -16,21 +16,33 @@ wget https://get.aergie.com/install -O - | bash
 
 ## macOS
 
-Run the following installer to download the Aergie binary:
-
 ```bash
 curl -sS https://get.aergie.com/install | bash
 ```
 
 # Autocomplete
 
-## Bash
+Aergie provide a completion tool to facilitate its use.
+
+## bash
+
+First, ensure that you install `bash-completion` using your package manager.
+
+Then, run the following command:
 
 ```bash
 ae completion bash > /etc/bash_completion.d/ae
 ```
 
 ## zsh
+
+To use zsh completion, you must enable it in your configuration by adding this line:
+
+```
+autoload -Uz compinit && compinit
+```
+
+Then, run the following command:
 
 ```bash
 ae completion zsh > "${fpath[1]}/_ae"
