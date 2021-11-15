@@ -22,7 +22,7 @@ func NewCompletionCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			switch args[0] {
 			case "bash":
-				err := cmd.Root().GenBashCompletion(os.Stdout)
+				err := cmd.Root().GenBashCompletionV2(os.Stdout, false)
 				if err != nil {
 					return err
 				}
