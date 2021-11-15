@@ -26,12 +26,12 @@ func Execute(version string) {
 		Args: cobra.NoArgs,
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			list := make([]string, 0)
-			for _, cmd := range cmd.Commands() {
-				if !cmd.IsAvailableCommand() {
+			for _, c := range cmd.Commands() {
+				if !c.IsAvailableCommand() {
 					continue
 				}
 
-				list = append(list, fmt.Sprintf("%s\t%s", cmd.Use, cmd.Short))
+				list = append(list, fmt.Sprintf("%s\t%s", c.Use, c.Short))
 			}
 			return list, cobra.ShellCompDirectiveNoSpace
 		},

@@ -12,7 +12,7 @@ import (
 func HelpFunc(cmd *cobra.Command, args []string) {
 	commands := []string{}
 	for _, c := range cmd.Commands() {
-		if !cmd.IsAvailableCommand() {
+		if !c.IsAvailableCommand() {
 			continue
 		}
 
