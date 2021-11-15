@@ -8,7 +8,7 @@ import (
 
 func newCompletionCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:    "completion [bash|zsh|fish|powershell]",
+		Use:    "completion [bash|zsh]",
 		Short:  "Generate completion script",
 		Hidden: true,
 
@@ -16,7 +16,7 @@ func newCompletionCommand() *cobra.Command {
 		SilenceErrors: true,
 
 		DisableFlagsInUseLine: true,
-		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
+		ValidArgs:             []string{"bash", "zsh"},
 		Args:                  cobra.ExactValidArgs(1),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -28,16 +28,6 @@ func newCompletionCommand() *cobra.Command {
 				}
 			case "zsh":
 				err := cmd.Root().GenZshCompletion(os.Stdout)
-				if err != nil {
-					return err
-				}
-			case "fish":
-				err := cmd.Root().GenFishCompletion(os.Stdout, true)
-				if err != nil {
-					return err
-				}
-			case "powershell":
-				err := cmd.Root().GenPowerShellCompletionWithDesc(os.Stdout)
 				if err != nil {
 					return err
 				}
