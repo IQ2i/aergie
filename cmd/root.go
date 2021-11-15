@@ -33,7 +33,7 @@ func Execute(version string) {
 
 				list = append(list, fmt.Sprintf("%s\t%s", c.Use, c.Short))
 			}
-			return list, cobra.ShellCompDirectiveNoSpace
+			return list, cobra.ShellCompDirectiveNoSpace | cobra.ShellCompDirectiveNoFileComp
 		},
 	}
 
