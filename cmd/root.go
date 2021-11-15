@@ -40,6 +40,18 @@ func Execute(version string) {
 		},
 	}
 
+	expandedArgs := []string{}
+	if len(os.Args) > 0 {
+		expandedArgs = os.Args[1:]
+	}
+
+	// translate `ae help <command>` to `ae <command> --help
+	if len(expandedArgs) == 2 && expandedArgs[0] == "help" {
+		expandedArgs = []string{expandedArgs[1], "--help"}
+	}
+
+	rootCmd.SetArgs(expandedArgs)
+
 	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
 	rootCmd.SetHelpFunc(helpCmd.Format)
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
