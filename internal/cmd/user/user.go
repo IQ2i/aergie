@@ -15,11 +15,11 @@ import (
 func NewUserCommands() []*cobra.Command {
 	var cmds = make([]*cobra.Command, 0)
 
-	for _, configCmd := range config.AppConfig.Commands {
-		steps := configCmd.Steps
+	for name, cmd := range config.Commands {
+		steps := cmd.Steps
 		userCmd := &cobra.Command{
-			Use:   configCmd.Name,
-			Short: configCmd.Help,
+			Use:   name,
+			Short: cmd.Help,
 
 			SilenceUsage:  true,
 			SilenceErrors: true,

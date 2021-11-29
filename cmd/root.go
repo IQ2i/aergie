@@ -11,10 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	cobra.EnableCommandSorting = false
-}
-
 // Execute is the real main function of Aergie cli
 func Execute(version string) {
 	var rootCmd = &cobra.Command{

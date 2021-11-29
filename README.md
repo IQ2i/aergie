@@ -2,7 +2,6 @@
 
 [![Continuous Integration](https://github.com/IQ2i/aergie/workflows/Continuous%20Integration/badge.svg?branch=master)](https://github.com/IQ2i/aergie/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/IQ2i/aergie)](https://goreportcard.com/report/github.com/IQ2i/aergie)
-[![Coverage Status](https://coveralls.io/repos/github/IQ2i/aergie/badge.svg?branch=master)](https://coveralls.io/github/IQ2i/aergie?branch=master)
 
 # Installation
 

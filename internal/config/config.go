@@ -4,96 +4,76 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 
+	"github.com/iq2i/aergie/internal/io"
 	"gopkg.in/yaml.v3"
 )
 
-// Config contains data from configuration file
 type Config struct {
-	Variables  map[string]string `yaml:"variables"`
-	CommandMap yaml.Node         `yaml:"commands,flow"`
-	Commands   []Command         `yaml:"-"`
+	Variables map[string]string  `yaml:"variables"`
+	Commands  map[string]Command `yaml:"commands"`
 }
-
-// Command is a command definition
 type Command struct {
 	Name  string   `yaml:"-"`
 	Help  string   `yaml:"help"`
 	Steps []string `yaml:"steps"`
 }
 
-// AppConfig is the application configuration, accessible from anywhere
-var AppConfig Config
+var Variables map[string]string
+var Commands map[string]Command
 
-// Init the configuration
 func Init() {
-	config := Config{}
-	defer func() { AppConfig = config }()
+	Variables = make(map[string]string)
+	Commands = make(map[string]Command)
 
-	// get config file content
-	data := configFile()
-	if len(data) == 0 {
-		return
+	Load(".aergie")
+	Load(".aergie.local")
+
+	if os.Getenv("AERGIE_ENV") != "" {
+		Load(fmt.Sprintf(".aergie.%s", os.Getenv("AERGIE_ENV")))
+		Load(fmt.Sprintf(".aergie.%s.local", os.Getenv("AERGIE_ENV")))
+	}
+}
+
+func Load(filename string) {
+	var data = Config{}
+
+	if filepath := fmt.Sprintf("%s.yml", filename); io.FileExists(filepath) {
+		data = ParseFile(filepath)
+	} else if filepath := fmt.Sprintf("%s.yaml", filename); io.FileExists(filepath) {
+		data = ParseFile(filepath)
 	}
 
-	// cast to YAML
-	err := yaml.Unmarshal(data, &config)
+	for key, variable := range data.Variables {
+		Variables[key] = variable
+	}
+
+	for key, cmd := range data.Commands {
+		for index, step := range cmd.Steps {
+			for name, value := range Variables {
+				step = strings.ReplaceAll(step, "${"+name+"}", value)
+			}
+
+			cmd.Steps[index] = step
+		}
+
+		Commands[key] = cmd
+	}
+}
+
+func ParseFile(filepath string) Config {
+	var config = Config{}
+
+	data, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		log.Fatal("Configuration file is invalid")
+		log.Fatalf("Can not read %sconfiguration file", filepath)
 	}
 
-	// create commands from YAML parsing
-	createCmd(&config)
-
-	// replace variables in steps
-	replaceVar(&config)
-}
-
-func configFile() []byte {
-	data, _ := ioutil.ReadFile(".aergie.yml")
-	if len(data) == 0 {
-		data, _ = ioutil.ReadFile(".aergie.yaml")
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		log.Fatalf("Invalid %s configuration file", filepath)
 	}
 
-	return data
-}
-
-func createCmd(config *Config) {
-	for key, item := range config.CommandMap.Content {
-		if yaml.ScalarNode == item.Kind {
-			// get command name
-			name := item.Value
-
-			for _, cmd := range config.Commands {
-				if cmd.Name == name {
-					log.Fatal(fmt.Sprintf("Configuration file is invalid, you have defined the same command \"%s\" twice", name))
-				}
-			}
-
-			// get next loop's item which is the command
-			item = config.CommandMap.Content[key+1]
-			command := &Command{}
-			_ = item.Decode(command)
-
-			// update command name
-			command.Name = name
-
-			config.Commands = append(config.Commands, *command)
-		}
-	}
-}
-
-func replaceVar(config *Config) {
-	for key, command := range config.Commands {
-		var steps []string
-		for _, step := range command.Steps {
-			for n, v := range config.Variables {
-				step = strings.ReplaceAll(step, "${"+n+"}", v)
-			}
-			steps = append(steps, step)
-		}
-		command.Steps = steps
-		config.Commands[key] = command
-	}
+	return config
 }
