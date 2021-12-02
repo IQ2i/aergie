@@ -49,8 +49,11 @@ func Load(filename string) {
 	for key, variable := range data.Variables {
 		Variables[key] = variable
 	}
-
 	for key, cmd := range data.Commands {
+		Commands[key] = cmd
+	}
+
+	for _, cmd := range Commands {
 		for index, step := range cmd.Steps {
 			for name, value := range Variables {
 				step = strings.ReplaceAll(step, "${"+name+"}", value)
@@ -58,8 +61,6 @@ func Load(filename string) {
 
 			cmd.Steps[index] = step
 		}
-
-		Commands[key] = cmd
 	}
 }
 
