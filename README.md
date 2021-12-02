@@ -11,13 +11,13 @@ Run the following installer to download the Aergie binary:
 ## Linux
 
 ```bash
-wget https://get.aergie.com/install -O - | bash
+wget https://raw.githubusercontent.com/IQ2i/aergie/master/install -O - | bash
 ```
 
 ## macOS
 
 ```bash
-curl -sS https://get.aergie.com/install | bash
+curl -sS https://raw.githubusercontent.com/IQ2i/aergie/master/install | bash
 ```
 
 # Autocomplete
