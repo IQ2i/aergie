@@ -7,7 +7,6 @@ require (
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
 	github.com/spf13/cobra v1.2.1
-	github.com/stretchr/testify v1.7.0
 	golang.org/x/sys v0.0.0-20211112143042-c6105e7cf70d // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
