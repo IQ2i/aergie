@@ -6,6 +6,7 @@ import (
 
 	completionCmd "github.com/iq2i/aergie/internal/cmd/completion"
 	helpCmd "github.com/iq2i/aergie/internal/cmd/help"
+	updateCmd "github.com/iq2i/aergie/internal/cmd/update"
 	userCmd "github.com/iq2i/aergie/internal/cmd/user"
 	versionCmd "github.com/iq2i/aergie/internal/cmd/version"
 	"github.com/spf13/cobra"
@@ -54,9 +55,10 @@ func Execute(version string) {
 
 	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
 	rootCmd.SetVersionTemplate(versionCmd.Format(version))
-
 	rootCmd.AddCommand(versionCmd.NewVersionCommand(version))
+
 	rootCmd.AddCommand(completionCmd.NewCompletionCommand())
+	rootCmd.AddCommand(updateCmd.NewUpdateCommand(version))
 	rootCmd.AddCommand(userCmd.NewUserCommands()...)
 
 	if err := rootCmd.Execute(); err != nil {
