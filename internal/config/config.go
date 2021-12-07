@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"strings"
 
 	"github.com/iq2i/aergie/internal/io"
@@ -24,26 +23,28 @@ type Command struct {
 var Variables map[string]string
 var Commands map[string]Command
 
-func Init() {
+func init() {
 	Variables = make(map[string]string)
 	Commands = make(map[string]Command)
+}
 
-	Load(".aergie")
-	Load(".aergie.local")
+func LoadEnv(path string, env string) {
+	populate(path)
+	populate(fmt.Sprintf("%s.local", path))
 
-	if os.Getenv("AERGIE_ENV") != "" {
-		Load(fmt.Sprintf(".aergie.%s", os.Getenv("AERGIE_ENV")))
-		Load(fmt.Sprintf(".aergie.%s.local", os.Getenv("AERGIE_ENV")))
+	if env != "" {
+		populate(fmt.Sprintf("%s.%s", path, env))
+		populate(fmt.Sprintf("%s.%s.local", path, env))
 	}
 }
 
-func Load(filename string) {
+func populate(filename string) {
 	var data = Config{}
 
 	if filepath := fmt.Sprintf("%s.yml", filename); io.FileExists(filepath) {
-		data = ParseFile(filepath)
+		data = parseFile(filepath)
 	} else if filepath := fmt.Sprintf("%s.yaml", filename); io.FileExists(filepath) {
-		data = ParseFile(filepath)
+		data = parseFile(filepath)
 	}
 
 	for key, variable := range data.Variables {
@@ -64,12 +65,12 @@ func Load(filename string) {
 	}
 }
 
-func ParseFile(filepath string) Config {
+func parseFile(filepath string) Config {
 	var config = Config{}
 
 	data, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		log.Fatalf("Can not read %sconfiguration file", filepath)
+		log.Fatalf("Can not read %s configuration file", filepath)
 	}
 
 	if err := yaml.Unmarshal(data, &config); err != nil {

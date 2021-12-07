@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/iq2i/aergie/cmd"
 	"github.com/iq2i/aergie/internal/config"
 )
@@ -8,6 +10,6 @@ import (
 var version = "DEV"
 
 func main() {
-	config.Init()
+	config.LoadEnv(".aergie", os.Getenv("AERGIE_ENV"))
 	cmd.Execute(version)
 }
