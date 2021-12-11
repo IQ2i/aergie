@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/iq2i/aergie/internal/io"
+	"github.com/iq2i/aergie/internal/file"
 	"gopkg.in/yaml.v3"
 )
 
@@ -41,9 +41,9 @@ func LoadEnv(path string, env string) {
 func populate(filename string) {
 	var data = Config{}
 
-	if filepath := fmt.Sprintf("%s.yml", filename); io.FileExists(filepath) {
+	if filepath := fmt.Sprintf("%s.yml", filename); file.Exists(filepath) {
 		data = parseFile(filepath)
-	} else if filepath := fmt.Sprintf("%s.yaml", filename); io.FileExists(filepath) {
+	} else if filepath := fmt.Sprintf("%s.yaml", filename); file.Exists(filepath) {
 		data = parseFile(filepath)
 	}
 
