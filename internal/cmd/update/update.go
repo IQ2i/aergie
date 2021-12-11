@@ -5,12 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"runtime"
+	"strings"
+	"time"
 
+	"github.com/iq2i/aergie/internal/file"
 	"github.com/spf13/cobra"
 )
 
 func NewUpdateCommand(version string) *cobra.Command {
+
 	cmd := &cobra.Command{
 		Use:   "self-update",
 		Short: "Updates aergie to the latest version",
@@ -19,6 +24,7 @@ func NewUpdateCommand(version string) *cobra.Command {
 		SilenceErrors: true,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
+
 			var latestVersion = getLatestVersion()
 
 			if version == latestVersion {
@@ -28,13 +34,30 @@ func NewUpdateCommand(version string) *cobra.Command {
 
 			var releaseURL = fmt.Sprintf("https://github.com/iq2i/aergie/releases/download/%s/aergie_%s_%s.gz", latestVersion, runtime.GOOS, runtime.GOARCH)
 
-			// TODO: get archive from GitHub
+			var source = fmt.Sprintf("/tmp/ae_%s.gz", time.Now().Format("20060102150405"))
+			if err := file.Download(source, releaseURL); err != nil {
+				log.Fatal(err)
+			}
+			defer clean(source)
 
-			// TODO: unzip archive
+			var dest = strings.TrimSuffix(source, ".gz")
+			if err := file.Uncompress(source, dest); err != nil {
+				log.Fatal(err)
+			}
+			defer clean(dest)
 
-			// TODO: change permission of release file to be executable
+			if err := os.Chmod(dest, 0755); err != nil {
+				log.Fatal(err)
+			}
 
-			// TODO: mv release to current aergie location
+			var executable, err = os.Executable()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if err := os.Rename(dest, executable); err != nil {
+				log.Fatal(err)
+			}
 
 			return nil
 		},
@@ -44,6 +67,7 @@ func NewUpdateCommand(version string) *cobra.Command {
 }
 
 func getLatestVersion() string {
+
 	resp, err := http.Get("https://api.github.com/repos/iq2i/aergie/releases/latest")
 	if err != nil {
 		log.Fatalln("Could not resolve host api.github.com")
@@ -51,6 +75,15 @@ func getLatestVersion() string {
 
 	var result map[string]interface{}
 
-	json.NewDecoder(resp.Body).Decode(&result)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+
 	return fmt.Sprintf("%v", result["tag_name"])
+}
+
+func clean(path string) {
+	if err := file.Remove(path); err != nil {
+		log.Fatal(err)
+	}
 }
