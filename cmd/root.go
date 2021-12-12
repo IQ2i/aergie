@@ -9,15 +9,15 @@ import (
 	updateCmd "github.com/iq2i/aergie/internal/cmd/update"
 	userCmd "github.com/iq2i/aergie/internal/cmd/user"
 	versionCmd "github.com/iq2i/aergie/internal/cmd/version"
+	"github.com/iq2i/aergie/internal/io"
 	"github.com/spf13/cobra"
 )
 
 // Execute is the real main function of Aergie cli
 func Execute(version string) {
 	var rootCmd = &cobra.Command{
-		Use:     "ae <command> [flags]",
-		Short:   "Aergie CLI",
-		Long:    "An easy alternative to makefile",
+		Use:     "ae <command>",
+		Short:   fmt.Sprintf("Aergie %s - An easy alternative to makefile", io.Green(version)),
 		Version: version,
 
 		SilenceUsage:  true,
@@ -49,11 +49,11 @@ func Execute(version string) {
 
 	rootCmd.SetArgs(expandedArgs)
 
-	rootCmd.PersistentFlags().Bool("help", false, "Show help for command")
+	rootCmd.PersistentFlags().BoolP("help", "h", false, "Show help for command")
 	rootCmd.SetHelpFunc(helpCmd.Format)
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
-	rootCmd.PersistentFlags().Bool("version", false, "Show ae version")
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "Show ae version")
 	rootCmd.SetVersionTemplate(versionCmd.Format(version))
 	rootCmd.AddCommand(versionCmd.NewVersionCommand(version))
 

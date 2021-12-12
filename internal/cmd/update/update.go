@@ -19,6 +19,9 @@ func NewUpdateCommand(version string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "self-update",
 		Short: "Updates aergie to the latest version",
+		Annotations: map[string]string{
+			"IsCore": "true",
+		},
 
 		SilenceUsage:  true,
 		SilenceErrors: true,

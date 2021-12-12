@@ -11,6 +11,9 @@ func NewCompletionCommand() *cobra.Command {
 		Use:    "completion [bash|zsh]",
 		Short:  "Generate completion script",
 		Hidden: true,
+		Annotations: map[string]string{
+			"IsCore": "true",
+		},
 
 		SilenceUsage:  true,
 		SilenceErrors: true,
