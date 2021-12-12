@@ -9,8 +9,11 @@ import (
 
 func NewVersionCommand(version string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:    "version",
-		Hidden: true,
+		Use:   "version",
+		Short: "Display this application version",
+		Annotations: map[string]string{
+			"IsCore": "true",
+		},
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			fmt.Fprint(cmd.OutOrStdout(), Format(version))

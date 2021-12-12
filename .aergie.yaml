@@ -1,0 +1,27 @@
+commands:
+  dep:update:
+    help: Update dependencies
+    steps:
+      - go get -t -u ./...
+
+  dep:clean:
+    help: Clean dependencies
+    steps:
+      - go mod tidy
+
+  ci:
+    help: Run CI jobs
+    steps:
+      - ae ci:lint
+      - ae ci:test
+
+  ci:lint:
+    help: Run linters
+    steps:
+      - ~/go/bin/golangci-lint run
+      - ~/go/bin/golint ./...
+
+  ci:test:
+    help: Run tests
+    steps:
+      - go test ./...
